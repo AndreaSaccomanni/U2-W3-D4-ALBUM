@@ -44,14 +44,14 @@ function displayImages(photos) {
     col.classList.add("col-md-6");
 
     col.innerHTML = `
-      <div class="card mb-4 shadow-sm">
+        <div class="card mb-4 shadow-sm">
         <img src="${photo.src.medium}" class="bd-placeholder-img card-img-top" />
-        <div class="card-body">
+          <div class="card-body">
           <h5 class="card-title">${photo.photographer}</h5>
           <p class="card-text">Foto di ${photo.photographer}</p>
+          </div>
         </div>
-      </div>
-    `;
+      `;
     container.appendChild(col);
   });
 }
