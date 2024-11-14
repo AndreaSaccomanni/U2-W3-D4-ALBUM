@@ -6,7 +6,7 @@ loadImagesBtn.addEventListener("click", loadImages);
 
 function loadImages() {
   // URL dell'API con query "nature"
-  const url = "https://api.pexels.com/v1/search?query=nature"; // Puoi sostituire "nature" con qualsiasi altra parola chiave
+  const url = "https://api.pexels.com/v1/search?query=nature";
 
   // autorizzazione
   const authorization = {
