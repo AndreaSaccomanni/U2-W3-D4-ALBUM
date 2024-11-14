@@ -1,57 +1,46 @@
 const apiKey = "MjU8UfUnVbzzDQvbmRrpEwgw1l5TOh6asOYdstB6JExSlixnb4fs0XOa";
 
-const loadImagesBtn = document.getElementById("loadImages");
+const btnPrimary = document.querySelector(".btn.btn-primary");
+const btnSecondary = document.querySelector(".btn.btn-secondary");
+btnPrimary.onclick = () => handlePexelsApi("cat");
+btnSecondary.onclick = () => handlePexelsApi("nature");
+//console.log(btnPrimary, btnSecondary);
 
-loadImagesBtn.addEventListener("click", loadImages);
+const cardRow = document.querySelector(".album.row");
 
-function loadImages() {
-  // URL dell'API con query "nature"
-  const url = "https://api.pexels.com/v1/search?query=nature";
-
-  // autorizzazione
-  const authorization = {
+const handlePexelsApi = (query) => {
+  fetch(URL + query, {
     headers: {
-      Authorization: apiKey // Imposta l'API key come header di autorizzazione
+      Authorization: "MjU8UfUnVbzzDQvbmRrpEwgw1l5TOh6asOYdstB6JExSlixnb4fs0XOa"
     }
-  };
-
-  // richiesta all'API di Pexels
-  fetch(url, authorization)
-    .then((response) => {
-      if (response.ok) {
-        return response.json(); // Converte la risposta in JSON
-      } else {
-        throw new Error("Errore nella richiesta");
+  })
+    .then((resp) => {
+      if (resp.ok) {
+        return resp.json();
       }
     })
-    .then((obj) => {
-      displayImages(obj.photos); // Chiama la funzione per mostrare le immagini
-    })
-    .catch((error) => {
-      console.error("Errore:", error); // Mostra l'errore in console
-    });
-}
-
-// Funzione per mostrare le immagini nella pagina
-function displayImages(photos) {
-  const container = document.getElementById("container"); // Seleziona il contenitore delle immagini
-  container.innerHTML = ""; // Svuota il contenuto del contenitore
-
-  // Cicla attraverso ogni immagine e crea il markup per mostrarla
-  photos.forEach((photo) => {
-    const col = document.createElement("div");
-    const row = document.getElementById("row");
-    col.classList.add("col-md-6");
-
-    col.innerHTML = `
-        <div class="card mb-4 shadow-sm">
-        <img src="${photo.src.medium}" class="bd-placeholder-img card-img-top" />
-          <div class="card-body">
-          <h5 class="card-title">${photo.photographer}</h5>
-          <p class="card-text">Foto di ${photo.photographer}</p>
-          </div>
-        </div>
+    .then((pexelsObj) => {
+      pexelsObj.Obj.photos.forEach((photo) => {
+        console.log(photo.photographer);
+        const col = document.createElement("div");
+        col.className = "col-md-4";
+        col.innerHTML = `
+              <div class="card mb-4 shadow-sm">
+                <img src=${photo.src.medium} class="bd-placeholder-img card-img-top" />
+                <div class="card-body">
+                  <h5 class="card-title">${photo.photographer}</h5>
+                  <p class="card-text">
+                        ${photo.alt}</p>
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="btn-group">
+                      <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                      <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
+                    </div>
+                    <small class="text-muted">9 mins</small>
+                  </div>
+                </div>
+              </div>
       `;
-    container.appendChild(col);
-  });
-}
+      });
+    });
+};
