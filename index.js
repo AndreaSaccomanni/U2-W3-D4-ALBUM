@@ -1,4 +1,6 @@
+//dichiaro la variabile che contiene la apiKey che verra' utitlizzata per l'autorizzazione
 const apiKey = "MjU8UfUnVbzzDQvbmRrpEwgw1l5TOh6asOYdstB6JExSlixnb4fs0XOa";
+//dichiaro la variabile che contiene l'url che servira' per la richiesta fetch
 const URL = "https://api.pexels.com/v1/search?query=";
 
 //seleziono i due bottoni
@@ -12,10 +14,13 @@ btnSecondary.onclick = () => handlePexelsApi("nature");
 // seleziono la row dove appendero' la col con le card
 const cardRow = document.querySelector(".album .row");
 
+//seleziono il form
+const form = document.querySelector("form");
+
 const handlePexelsApi = (query) => {
   fetch(URL + query, {
     headers: {
-      Authorization: "MjU8UfUnVbzzDQvbmRrpEwgw1l5TOh6asOYdstB6JExSlixnb4fs0XOa"
+      Authorization: apiKey
     }
   })
     .then((resp) => {
