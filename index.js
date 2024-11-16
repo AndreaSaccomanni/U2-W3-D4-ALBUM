@@ -1,12 +1,16 @@
 const apiKey = "MjU8UfUnVbzzDQvbmRrpEwgw1l5TOh6asOYdstB6JExSlixnb4fs0XOa";
+const URL = "https://api.pexels.com/v1/search?query=";
 
+//seleziono i due bottoni
 const btnPrimary = document.querySelector(".btn.btn-primary");
 const btnSecondary = document.querySelector(".btn.btn-secondary");
+//assegno la funzione che genera le card all'onclik dei due bottoni
+//pero' vanno richiamate tramite un'altra funzione altrimenti si scatenerebbero subito, senza aspettare il click
+//il parametro inserito nelle funzioni, sara' la query che fara generare immagini diverse
 btnPrimary.onclick = () => handlePexelsApi("cat");
 btnSecondary.onclick = () => handlePexelsApi("nature");
-//console.log(btnPrimary, btnSecondary);
-
-const cardRow = document.querySelector(".album.row");
+// seleziono la row dove appendero' la col con le card
+const cardRow = document.querySelector(".album .row");
 
 const handlePexelsApi = (query) => {
   fetch(URL + query, {
@@ -16,14 +20,22 @@ const handlePexelsApi = (query) => {
   })
     .then((resp) => {
       if (resp.ok) {
+        //console.log("resp", resp.json());
         return resp.json();
       }
     })
     .then((pexelsObj) => {
-      pexelsObj.Obj.photos.forEach((photo) => {
-        console.log(photo.photographer);
+      //svuoto il contenitore dalle foto presenti nell'html, che verranno poi ostituite da quelle
+      //generate con la funzione
+      cardRow.innerHTML = "";
+
+      pexelsObj.photos.forEach((photo) => {
+        //console.log(photo.photographer);
+        // creo la col che conterra' l'immagine
         const col = document.createElement("div");
+        //assegno la classe
         col.className = "col-md-4";
+        //assegno il contenuto
         col.innerHTML = `
               <div class="card mb-4 shadow-sm">
                 <img src=${photo.src.medium} class="bd-placeholder-img card-img-top" />
@@ -36,11 +48,12 @@ const handlePexelsApi = (query) => {
                       <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
                       <button type="button" class="btn btn-sm btn-outline-secondary">Edit</button>
                     </div>
-                    <small class="text-muted">9 mins</small>
+                    <small class="text-muted">${photo.id}</small>
                   </div>
                 </div>
               </div>
       `;
+        cardRow.appendChild(col);
       });
     });
 };
